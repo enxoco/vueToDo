@@ -3,35 +3,41 @@
     <div>
       <h1 class="title">Time Tracker</h1>
       <div class="flex">
+        <div>
         <img src="logo.svg" height="500px" />
+                      <div class="links">
+        <button @click="addTask">
+          <img src="plus-circle.svg" />
+        </button>
 
+        Total Time: {{ getTotalTime() }}
+      </div>
+        </div>
+        <div >
         <ul>
           <li v-for="(task, index) in tasks" :data-index="index">
             <input v-model="task.item" @keyup="saveTasks()" />
-            <a @click="deleteTask(index)">
+            <button @click="deleteTask(index)">
               <x-circle-icon size="1.5x" class="custom-class inactive"></x-circle-icon>
-            </a>
-            <a @click="start(index)" disabled="(task.active) ? 'disabled' : ''">
+            </button>
+            <button @click="start(index)">
               <play-circle-icon
                 size="1.5x"
                 class="custom-class active"
                 :class="{ active: task.active }"
               ></play-circle-icon>
-            </a>
-            <a @click="stop(index)">
+            </button>
+            <button @click="stop(index)">
               <stop-circle-icon size="1.5x" class="custom-class" :class="{ inactive: task.active }"></stop-circle-icon>
-            </a>
+            </button>
             {{ (formattedElapsedTime(index)) ? formattedElapsedTime(index) : "00:00:00" }}
           </li>
-          <div class="links">
-            <a @click="addTask">
-              <img src="plus-circle.svg" />
-            </a>
-          </div>
-
-          Total Time: {{ getTotalTime() }}
+          <li></li>
         </ul>
+
+        </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -48,15 +54,18 @@ h1 {
 }
 ul {
   list-style: none;
+  height: 500px;
+  align-items: flex-end;
+  overflow-y: scroll;
 }
 input {
-    border: 1px solid gainsboro;
-    padding: 10px;
-    box-shadow: 1px 1px 1px 1px gainsboro;
-    border-radius: 5px;
-    margin-right: 10px;
-    margin-bottom: 15px;
-    min-width: 300px;
+  border: 1px solid gainsboro;
+  padding: 10px;
+  box-shadow: 1px 1px 1px 1px gainsboro;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  min-width: 300px;
 }
 .flex {
   display: flex;
@@ -66,6 +75,11 @@ body {
 }
 a {
   stroke: #252627;
+}
+.custom-class {
+    -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 </style>
 <script>
@@ -148,7 +162,7 @@ export default {
       this.saveTasks();
     },
     deleteTask(index) {
-      this.tasks.splice(this.tasks.index, 1);
+      this.tasks.splice(index, 1);
       this.saveTasks();
     }
   }
@@ -185,5 +199,18 @@ export default {
 
 .links {
   padding-top: 15px;
+  
+}
+/* .links {
+    position: absolute;
+    bottom: 38.5vh;
+    left: 31.2vw;
+} */
+button {
+    border-radius: 50%;
+    padding: 2px 5px 5px 5px;
+    border: none;
+    background: white;
+    box-shadow: 1px 1px 5px 1px gainsboro;
 }
 </style>
