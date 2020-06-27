@@ -17,7 +17,8 @@
     "feather-icons": "^4.28.0",
     "nuxt": "^2.13.0",
     "vue-feather-icons": "^5.0.0",
-    "worker-timers": "^6.0.15"
+    "worker-timers": "^6.0.15",
+    "@nuxtjs/pwa": "^3.0.0-beta.20"
   },
   "devDependencies": {
     "@nuxtjs/pwa": "^3.0.0-beta.20",
