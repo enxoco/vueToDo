@@ -3,24 +3,10 @@
     <div>
       <h1 class="title">Time Tracker</h1>
       <div class="flex">
-        <div>
-        <img src="logo.svg" height="500px" />
-                      <div class="links">
-        <button @click="addTask">
-          <img src="plus-circle.svg" />
-        </button>
-
-        Total Time: {{ getTotalTime() }}
-      </div>
-        </div>
-        <div >
         <ul>
           <li v-for="(task, index) in tasks" :data-index="index">
             <input v-model="task.item" @keyup="saveTasks()" />
-            <button @click="deleteTask(index)">
-              <x-circle-icon size="1.5x" class="custom-class inactive"></x-circle-icon>
-            </button>
-            <button @click="start(index)">
+            <button @click="start(index)" :class="{ active: task.active }">
               <play-circle-icon
                 size="1.5x"
                 class="custom-class active"
@@ -30,58 +16,24 @@
             <button @click="stop(index)">
               <stop-circle-icon size="1.5x" class="custom-class" :class="{ inactive: task.active }"></stop-circle-icon>
             </button>
-            {{ (formattedElapsedTime(index)) ? formattedElapsedTime(index) : "00:00:00" }}
+            <button @click="deleteTask(index)">
+              <x-circle-icon size="1.5x" class="custom-class inactive"></x-circle-icon>
+            </button>
+            <span
+              class="timer"
+            >{{ (formattedElapsedTime(index)) ? formattedElapsedTime(index) : "00:00:00" }}</span>
           </li>
-          <li></li>
         </ul>
-
+        <div class="links">
+          <button @click="addTask">
+            <img src="plus-circle.svg" />
+          </button>
+          Total Time: {{ getTotalTime() }}
         </div>
       </div>
-
     </div>
   </div>
 </template>
-<style scoped>
-h1 {
-  font-family: "Krona One";
-  font-size: 5.5rem;
-}
-.active {
-  stroke: #bfb48f;
-}
-.inactive {
-  stroke: #904e55;
-}
-ul {
-  list-style: none;
-  height: 500px;
-  align-items: flex-end;
-  overflow-y: scroll;
-}
-input {
-  border: 1px solid gainsboro;
-  padding: 10px;
-  box-shadow: 1px 1px 1px 1px gainsboro;
-  border-radius: 5px;
-  margin-right: 10px;
-  margin-bottom: 15px;
-  min-width: 300px;
-}
-.flex {
-  display: flex;
-}
-body {
-  background: #bfb48f;
-}
-a {
-  stroke: #252627;
-}
-.custom-class {
-    -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-}
-</style>
 <script>
 import {
   PlusCircleIcon,
@@ -169,16 +121,7 @@ export default {
 };
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
+<style scoped>
 .title {
   font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -199,18 +142,99 @@ export default {
 
 .links {
   padding-top: 15px;
-  
 }
-/* .links {
-    position: absolute;
-    bottom: 38.5vh;
-    left: 31.2vw;
-} */
+
 button {
-    border-radius: 50%;
-    padding: 2px 5px 5px 5px;
-    border: none;
-    background: white;
-    box-shadow: 1px 1px 5px 1px gainsboro;
+  border-radius: 50%;
+  padding: 5px 5px 2px 5px;
+  border: none;
+  box-shadow: 1px 1px 5px 1px gainsboro;
+  cursor: pointer;
+  outline: none;
+  background: #f1faee;
+}
+button:hover {
+  transform: scale3d(1.1, 1.1, 1.1);
+}
+button.active {
+  transform: scale3d(1.2, 1.2, 1.2);
+}
+body {
+  scrollbar-color: red yellow;
+}
+
+h1 {
+  font-family: "Montserrat";
+  font-size: 2.5rem;
+  color: #2a9d8f;
+  text-align: left;
+}
+.active {
+  stroke: #2a9d8f;
+}
+.inactive {
+  stroke: #e63946;
+}
+ul {
+  list-style: none;
+  height: 500px;
+  align-items: flex-end;
+  overflow-y: scroll;
+  scrollbar-face-color: #2a9d8f;
+}
+ul::-webkit-scrollbar {
+  width: 12px;
+  padding-right: 10px;
+}
+span.timer {
+  margin-right: 20px;
+}
+/* Track */
+ul::-webkit-scrollbar-track {
+  background: #a8dadc;
+}
+
+/* Handle */
+ul::-webkit-scrollbar-thumb {
+  /* -webkit-border-radius: 10px;
+    border-radius: 10px; */
+  background: #2a9d8f;
+}
+input {
+  border: 1px solid gainsboro;
+  padding: 10px;
+  box-shadow: 1px 1px 1px 1px gainsboro;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  min-width: 300px;
+}
+.flex {
+  flex-direction: column;
+  background: white;
+  box-shadow: 2px 2px 5px 1px gainsboro;
+  border-radius: 5px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+body {
+  background: #f1faee;
+}
+a {
+  stroke: #252627;
+}
+.custom-class {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+.container {
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 </style>
